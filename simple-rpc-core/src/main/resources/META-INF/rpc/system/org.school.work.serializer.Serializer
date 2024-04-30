@@ -1,0 +1,4 @@
+jdk=org.school.work.serializer.JdkSerializer
+hessian=org.school.work.serializer.HessianSerializer
+json=org.school.work.serializer.JsonSerializer
+kryo=org.school.work.serializer.KryoSerializer

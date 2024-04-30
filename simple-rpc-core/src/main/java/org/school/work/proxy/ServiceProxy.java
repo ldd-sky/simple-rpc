@@ -2,10 +2,11 @@ package org.school.work.proxy;
 
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
+import org.school.work.RpcApplication;
 import org.school.work.model.RpcRequest;
 import org.school.work.model.RpcResponse;
-import org.school.work.serializer.JdkSerializer;
 import org.school.work.serializer.Serializer;
+import org.school.work.serializer.SerializerFactory;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
@@ -22,13 +23,11 @@ import java.lang.reflect.Method;
 public class ServiceProxy implements InvocationHandler {
     /**
      * 调用代理
-     * @return
-     * @throws Throwable
      */
     @Override
-    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+    public Object invoke(Object proxy, Method method, Object[] args) {
         // 指定序列化器
-        Serializer serializer = new JdkSerializer();
+        final Serializer serializer = SerializerFactory.getInstance(RpcApplication.getRpcConfig().getSerializer());
 
         // 发送请求
         RpcRequest rpcRequest = RpcRequest.builder()

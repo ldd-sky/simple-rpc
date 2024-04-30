@@ -4,11 +4,12 @@ import io.vertx.core.Handler;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
+import org.school.work.RpcApplication;
 import org.school.work.model.RpcRequest;
 import org.school.work.model.RpcResponse;
 import org.school.work.registry.LocalRegistry;
-import org.school.work.serializer.JdkSerializer;
 import org.school.work.serializer.Serializer;
+import org.school.work.serializer.SerializerFactory;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -29,8 +30,8 @@ import java.lang.reflect.Method;
 public class HttpServerHandler implements Handler<HttpServerRequest> {
     @Override
     public void handle(HttpServerRequest request) {
-        // 制定序列化器
-        final Serializer serializer = new JdkSerializer();
+        // 指定序列化器
+        final Serializer serializer = SerializerFactory.getInstance(RpcApplication.getRpcConfig().getSerializer());
 
         // 记录日志
         System.out.println("Received request: " + request.method() + " " + request.uri());
@@ -38,7 +39,7 @@ public class HttpServerHandler implements Handler<HttpServerRequest> {
         // 异步处理HTTP请求
         request.bodyHandler(body -> {
             byte[] bytes = body.getBytes();
-            RpcRequest rpcRequest = null;
+            RpcRequest rpcRequest;
             try {
                 rpcRequest = serializer.deserialize(bytes, RpcRequest.class);
             } catch (IOException e) {
@@ -68,9 +69,6 @@ public class HttpServerHandler implements Handler<HttpServerRequest> {
 
     /**
      * 响应
-     * @param request
-     * @param rpcResponse
-     * @param serializer
      */
     void doResponse(HttpServerRequest request, RpcResponse rpcResponse, Serializer serializer){
         HttpServerResponse httpServerResponse = request.response()

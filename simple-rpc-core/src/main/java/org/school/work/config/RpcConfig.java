@@ -1,6 +1,7 @@
 package org.school.work.config;
 
 import lombok.*;
+import org.school.work.serializer.SerializerKeys;
 
 /**
  * <p>Description: RPC框架配置</p >
@@ -41,4 +42,9 @@ public class RpcConfig {
      * 模拟调用
      */
     private boolean mock = false;
+
+    /**
+     * 序列化器
+     */
+    private String serializer = SerializerKeys.JDK;
 }
