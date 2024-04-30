@@ -10,6 +10,7 @@
         <module name="ex-provider" />
         <module name="ex-common" />
         <module name="simple-rpc-easy" />
+        <module name="simple-rpc-core" />
         <module name="ex-consumer" />
       </profile>
     </annotationProcessing>
