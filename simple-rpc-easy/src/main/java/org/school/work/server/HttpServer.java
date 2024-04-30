@@ -1,4 +1,4 @@
-package org.school.work;
+package org.school.work.server;
 
 /**
  * <p>Description: HTTP 服务器借口</p >
