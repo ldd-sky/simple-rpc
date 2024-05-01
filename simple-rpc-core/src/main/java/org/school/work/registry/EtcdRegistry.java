@@ -103,6 +103,15 @@ public class EtcdRegistry implements Registry{
     @Override
     public void destroy() {
         System.out.println("当前节点下线");
+        // 下线节点，遍历本节点的所有key
+        for (String key : localRegisterNodeKeySet){
+            try {
+                kvClient.delete(ByteSequence.from(key, StandardCharsets.UTF_8)).get();
+            } catch (Exception e){
+                throw new RuntimeException(key + "节点下线失败");
+            }
+        }
+
         // 释放资源
         if (kvClient != null){
             kvClient.close();
@@ -115,27 +124,24 @@ public class EtcdRegistry implements Registry{
     @Override
     public void heartBeat() {
         // 10秒续命一次
-        CronUtil.schedule("*/10 * * * * *", new Task() {
-            @Override
-            public void execute() {
-                // 遍历本节点的所有key
-                for(String key : localRegisterNodeKeySet){
-                    try {
-                        List<KeyValue> keyValues = kvClient.get(ByteSequence.from(key, StandardCharsets.UTF_8))
-                                .get()
-                                .getKvs();
-                        // 节点过期，重启
-                        if(CollUtil.isEmpty(keyValues)){
-                            continue;
-                        }
-                        // 节点没过期，重新注册续命
-                        KeyValue keyValue = keyValues.get(0);
-                        String value = keyValue.getValue().toString(StandardCharsets.UTF_8);
-                        ServiceMetaInfo serviceMetaInfo = JSONUtil.toBean(value, ServiceMetaInfo.class);
-                        register(serviceMetaInfo);
-                    } catch (Exception e){
-                        throw new RuntimeException(key + "续签失败", e);
+        CronUtil.schedule("*/10 * * * * *", (Task) () -> {
+            // 遍历本节点的所有key
+            for(String key : localRegisterNodeKeySet){
+                try {
+                    List<KeyValue> keyValues = kvClient.get(ByteSequence.from(key, StandardCharsets.UTF_8))
+                            .get()
+                            .getKvs();
+                    // 节点过期，重启
+                    if(CollUtil.isEmpty(keyValues)){
+                        continue;
                     }
+                    // 节点没过期，重新注册续命
+                    KeyValue keyValue = keyValues.get(0);
+                    String value = keyValue.getValue().toString(StandardCharsets.UTF_8);
+                    ServiceMetaInfo serviceMetaInfo = JSONUtil.toBean(value, ServiceMetaInfo.class);
+                    register(serviceMetaInfo);
+                } catch (Exception e){
+                    throw new RuntimeException(key + "续签失败", e);
                 }
             }
         });

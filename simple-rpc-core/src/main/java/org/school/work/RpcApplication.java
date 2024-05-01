@@ -1,8 +1,11 @@
 package org.school.work;
 
 import lombok.extern.slf4j.Slf4j;
+import org.school.work.config.RegistryConfig;
 import org.school.work.config.RpcConfig;
 import org.school.work.constant.RpcConstant;
+import org.school.work.proxy.RegistryFactory;
+import org.school.work.registry.Registry;
 import org.school.work.utils.ConfigUtils;
 
 /**
@@ -27,6 +30,15 @@ public class RpcApplication {
     public static void init(RpcConfig newRpcConfig){
         rpcConfig = newRpcConfig;
         log.info("rpc init, config = {}", newRpcConfig.toString());
+
+        // 注册中心初始化
+        RegistryConfig registryConfig = rpcConfig.getRegistryConfig();
+        Registry registry = RegistryFactory.getInstance(registryConfig.getRegistry());
+        registry.init(registryConfig);
+        log.info("registry init, config = {}", registryConfig);
+
+        // 创建并注册Shutdown Hook，JVM 推出时执行操作
+        Runtime.getRuntime().addShutdownHook(new Thread(registry::destroy));
     }
 
     /**
