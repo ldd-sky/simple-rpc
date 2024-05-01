@@ -84,11 +84,9 @@ public class SpiLoader {
         if (!instanceCache.containsKey(implClassName)) {
             try {
                 instanceCache.put(implClassName, implClass.getDeclaredConstructor().newInstance());
-            } catch (InstantiationException | IllegalAccessException e) {
+            } catch (Exception e) {
                 String errorMsg = String.format("%s 类实例化失败", implClassName);
                 throw new RuntimeException(errorMsg, e);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
             }
         }
         return (T) instanceCache.get(implClassName);
