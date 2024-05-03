@@ -10,7 +10,7 @@ import io.vertx.core.Vertx;
  * @author LiuYuHan
  * @version 1.0
  */
-public class VertxTcoClient {
+public class VertxTcpClient {
 
     public void start(){
         Vertx vertx = Vertx.vertx();
@@ -32,6 +32,6 @@ public class VertxTcoClient {
     }
 
     public static void main(String[] args) {
-        new VertxTcoClient().start();
+        new VertxTcpClient().start();
     }
 }
