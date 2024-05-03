@@ -1,0 +1,3 @@
+roundRobin=com.school.work.loadbalancer.RoundRobinLoadBalancer
+random=com.school.work.loadbalancer.RandomLoadBalancer
+consistentHash=com.school.work.loadbalancer.ConsistentHashLoadBalancer
