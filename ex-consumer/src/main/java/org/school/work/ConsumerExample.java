@@ -1,5 +1,6 @@
 package org.school.work;
 
+import org.school.work.bootstrap.ConsumerBootstrap;
 import org.school.work.model.User;
 import org.school.work.proxy.ServiceProxyFactory;
 import org.school.work.service.UserService;
@@ -15,6 +16,8 @@ import org.school.work.service.UserService;
 public class ConsumerExample {
 
     public static void main(String[] args) {
+        // 服务提供者初始化
+        ConsumerBootstrap.init();
 
         // 获取代理
         UserService userService = ServiceProxyFactory.getProxy(UserService.class);
@@ -30,7 +33,5 @@ public class ConsumerExample {
         }
         long number = userService.getNumber();
         System.out.println(number);
-//        RpcConfig rpcConfig = ConfigUtils.loadConfig(RpcConfig.class, "rpc");
-//        System.out.println(rpcConfig);
     }
 }
