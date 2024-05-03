@@ -9,6 +9,7 @@
         <option value="$PROJECT_DIR$/ex-provider/pom.xml" />
         <option value="$PROJECT_DIR$/simple-rpc-easy/pom.xml" />
         <option value="$PROJECT_DIR$/simple-rpc-core/pom.xml" />
+        <option value="$PROJECT_DIR$/simple-rpc-spring-boot-starter/pom.xml" />
       </list>
     </option>
   </component>

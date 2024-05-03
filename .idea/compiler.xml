@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="ex-provider" />
+        <module name="simple-rpc-spring-boot-starter" />
         <module name="ex-common" />
         <module name="simple-rpc-easy" />
         <module name="simple-rpc-core" />
