@@ -6,6 +6,8 @@ import org.school.work.config.RpcConfig;
 import org.school.work.constant.RpcConstant;
 import org.school.work.fault.retry.RetryStrategy;
 import org.school.work.fault.retry.RetryStrategyFactory;
+import org.school.work.fault.tolerant.TolerantStrategy;
+import org.school.work.fault.tolerant.TolerantStrategyFactory;
 import org.school.work.loadbalancer.LoadBalancer;
 import org.school.work.loadbalancer.LoadBalancerFactory;
 import org.school.work.model.RpcRequest;
@@ -67,10 +69,17 @@ public class ServiceProxy implements InvocationHandler {
             ServiceMetaInfo selectedServiceMetaInfo = loadBalancer.select(requestParams, serviceMetaInfoList);
 
             // rpc请求，使用重试机制
-            RetryStrategy retryStrategy = RetryStrategyFactory.getInstance(rpcConfig.getRetryStrategy());
-            RpcResponse rpcResponse = retryStrategy.doRetry(() ->
-                    VertxTcpClient.doRequest(rpcRequest, selectedServiceMetaInfo)
-            );
+            RpcResponse rpcResponse;
+            try {
+                RetryStrategy retryStrategy = RetryStrategyFactory.getInstance(rpcConfig.getRetryStrategy());
+                rpcResponse = retryStrategy.doRetry(() ->
+                        VertxTcpClient.doRequest(rpcRequest, selectedServiceMetaInfo)
+                );
+            } catch (Exception e){
+                // 容错机制
+                TolerantStrategy tolerantStrategy = TolerantStrategyFactory.getInstance(rpcConfig.getTolerantStrategy());
+                rpcResponse = tolerantStrategy.doTolerant(null, e);
+            }
             return rpcResponse.getData();
         } catch (Exception e){
             throw new RuntimeException("调用失败");

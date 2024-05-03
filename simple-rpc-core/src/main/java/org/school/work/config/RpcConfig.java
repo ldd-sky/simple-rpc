@@ -2,6 +2,7 @@ package org.school.work.config;
 
 import lombok.*;
 import org.school.work.fault.retry.RetryStrategyKeys;
+import org.school.work.fault.tolerant.TolerantStrategyKeys;
 import org.school.work.loadbalancer.LOadBalancerKeys;
 import org.school.work.serializer.SerializerKeys;
 
@@ -64,4 +65,9 @@ public class RpcConfig {
      * 重试策略
      */
     private String retryStrategy = RetryStrategyKeys.NO;
+
+    /**
+     * 容错策略
+     */
+    private String tolerantStrategy = TolerantStrategyKeys.FAIL_FAST;
 }

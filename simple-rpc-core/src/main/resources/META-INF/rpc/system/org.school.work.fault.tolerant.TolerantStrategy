@@ -1,0 +1,4 @@
+failBack=com.school.work.fault.tolerant.FailBackTolerantStrategy
+failFast=com.school.work.fault.tolerant.FailFastTolerantStrategy
+failOver=com.school.work.fault.tolerant.FailOverTolerantStrategy
+failSafe=com.school.work.fault.tolerant.FailSafeTolerantStrategy
