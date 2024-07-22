@@ -18,6 +18,7 @@ public class ServiceProxyFactory {
      * @return
      * @param <T>
      */
+    @SuppressWarnings("unchecked")
     public static <T> T getProxy(Class<T> serviceClass){
         return (T) Proxy.newProxyInstance(
                 serviceClass.getClassLoader(),
