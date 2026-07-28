@@ -34,7 +34,7 @@ We recommend using [Anaconda](https://www.anaconda.com/) to manage the Python en
 
 ```bash
 # Clone the repository
-git clone https://github.com/your_username/DSER.git
+git clone https://github.com/yuhan0802/DSER.git
 cd DSER
 
 # Create and activate an environment
