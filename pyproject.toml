@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dser"
+version = "0.1.0"
+description = "Event-based video frame interpolation via direct synthesis with an event-based reference"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "einops",
+  "lpips",
+  "numpy",
+  "opencv-python",
+  "scikit-image",
+  "tensorboard",
+  "torch",
+  "torchvision",
+]
+
+[project.scripts]
+dser-train = "dser.cli.train:main"
+dser-evaluate = "dser.cli.evaluate:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

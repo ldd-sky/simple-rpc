@@ -1,0 +1,8 @@
+__pycache__/
+*.py[cod]
+.DS_Store
+train/
+*.pth
+*.pkl
+runs/
+*.egg-info/
